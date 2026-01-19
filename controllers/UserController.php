@@ -21,13 +21,13 @@ class UserController
         $data = $this->user->getById($id);
         $data
             ? jsonResponse($data)
-            : jsonResponse(["message" => "User not found"], 404);
+            : jsonResponse(["message" => "User tidak ditemukan"], 404);
     }
 
     public function store($data)
     {
         if (!$data['username'] || !$data['password'] || !$data['role']) {
-            jsonResponse(["message" => "Invalid data"], 422);
+            jsonResponse(["message" => "Data tidak valid"], 422);
         }
 
         $this->user->create(
@@ -36,24 +36,33 @@ class UserController
             $data['role']
         );
 
-        jsonResponse(["message" => "User created"]);
+        jsonResponse(["message" => "User berhasil ditambahkan"]);
     }
 
     public function update($id, $data)
     {
         $this->user->update($id, $data['username'], $data['role']);
-        jsonResponse(["message" => "User updated"]);
+        jsonResponse(["message" => "User berhasil diperbarui"]);
     }
 
     public function updatePassword($id, $data)
     {
         $this->user->updatePassword($id, $data['password']);
-        jsonResponse(["message" => "Password updated"]);
+        jsonResponse(["message" => "Password berhasil diubah"]);
     }
 
-    public function destroy($id)
-    {
-        $this->user->delete($id);
-        jsonResponse(["message" => "User deleted"]);
+// delete user by id
+public function destroy($id)
+{
+    if (!$id) {
+        jsonResponse(["message" => "ID user tidak valid"], 400);
     }
+
+    $this->user->delete($id);
+
+    jsonResponse([
+        "message" => "User berhasil dihapus"
+    ], 200);
+}
+
 }
