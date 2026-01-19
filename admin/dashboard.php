@@ -1,11 +1,12 @@
 <?php
 require "../auth/middleware.php";
 
+// hanya admin
 if ($currentUser['role'] !== 'admin') {
-    jsonResponse(["message" => "Access denied"], 403);
+    jsonResponse(["message" => "Akses ditolak"], 403);
 }
 
 jsonResponse([
-    "message" => "Welcome Admin",
-    "user_id" => $currentUser['uid']
+    "message" => "Dashboard Admin Sistem Pembayaran UKT",
+    "admin_id" => $currentUser['uid']
 ]);
