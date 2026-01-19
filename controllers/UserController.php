@@ -51,18 +51,9 @@ class UserController
         jsonResponse(["message" => "Password berhasil diubah"]);
     }
 
-// delete user by id
-public function destroy($id)
-{
-    if (!$id) {
-        jsonResponse(["message" => "ID user tidak valid"], 400);
+    public function destroy($id)
+    {
+        $this->user->delete($id);
+        jsonResponse(["message" => "User berhasil dihapus"]);
     }
-
-    $this->user->delete($id);
-
-    jsonResponse([
-        "message" => "User berhasil dihapus"
-    ], 200);
-}
-
 }
