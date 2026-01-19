@@ -10,7 +10,6 @@ class User
         $this->conn = $db;
     }
 
-    //get user by username
     public function findByUsername(string $username): ?array
     {
         $stmt = $this->conn->prepare(
@@ -22,57 +21,53 @@ class User
         return $user ?: null;
     }
 
-    // CREATE
     public function create($username, $password, $role)
     {
         $hash = password_hash($password, PASSWORD_DEFAULT);
-
-        $sql = "INSERT INTO {$this->table} (username, password, role)
-                VALUES (?, ?, ?)";
-        $stmt = $this->conn->prepare($sql);
+        $stmt = $this->conn->prepare(
+            "INSERT INTO {$this->table} (username, password, role) VALUES (?, ?, ?)"
+        );
         return $stmt->execute([$username, $hash, $role]);
     }
 
-    // READ ALL
     public function getAll()
     {
-        $sql = "SELECT id, username, role, created_at FROM {$this->table}";
-        return $this->conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+        return $this->conn
+            ->query("SELECT id, username, role FROM {$this->table}")
+            ->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // READ BY ID
     public function getById($id)
     {
-        $sql = "SELECT id, username, role FROM {$this->table} WHERE id = ?";
-        $stmt = $this->conn->prepare($sql);
+        $stmt = $this->conn->prepare(
+            "SELECT id, username, role FROM {$this->table} WHERE id = ?"
+        );
         $stmt->execute([$id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // UPDATE
     public function update($id, $username, $role)
     {
-        $sql = "UPDATE {$this->table}
-                SET username = ?, role = ?
-                WHERE id = ?";
-        $stmt = $this->conn->prepare($sql);
+        $stmt = $this->conn->prepare(
+            "UPDATE {$this->table} SET username = ?, role = ? WHERE id = ?"
+        );
         return $stmt->execute([$username, $role, $id]);
     }
 
-    // UPDATE PASSWORD
     public function updatePassword($id, $password)
     {
         $hash = password_hash($password, PASSWORD_DEFAULT);
-        $sql = "UPDATE {$this->table} SET password = ? WHERE id = ?";
-        $stmt = $this->conn->prepare($sql);
+        $stmt = $this->conn->prepare(
+            "UPDATE {$this->table} SET password = ? WHERE id = ?"
+        );
         return $stmt->execute([$hash, $id]);
     }
 
-    // DELETE
     public function delete($id)
     {
-        $sql = "DELETE FROM {$this->table} WHERE id = ?";
-        $stmt = $this->conn->prepare($sql);
+        $stmt = $this->conn->prepare(
+            "DELETE FROM {$this->table} WHERE id = ?"
+        );
         return $stmt->execute([$id]);
     }
 }
