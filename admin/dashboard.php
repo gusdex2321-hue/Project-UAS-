@@ -1,7 +1,7 @@
 <?php
 require "../auth/middleware.php";
 
-// hanya admin
+
 if ($currentUser['role'] !== 'admin') {
     jsonResponse(["message" => "Akses ditolak"], 403);
 }

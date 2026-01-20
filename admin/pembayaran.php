@@ -3,9 +3,10 @@ require_once "../auth/middleware.php";
 require_once "../config/database.php";
 require_once "../helpers/response.php";
  
-if ($currentUser['role'] !== 'admin') {
+if (!in_array($currentUser['role'], ['admin', 'petugas'])) {
     jsonResponse(["message" => "Akses ditolak"], 403);
 }
+
  
 $db = (new Database())->connect();
  

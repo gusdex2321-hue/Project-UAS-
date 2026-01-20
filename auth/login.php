@@ -16,9 +16,9 @@ if (!$username || !$password) {
     jsonResponse(["message" => "Username & password masih kosong"], 422);
 }
 
-// DB Connection
+
 $db = (new Database())->connect();
-//object
+
 $userModel = new User($db);
 
 $user = $userModel->findByUsername($username);
@@ -31,7 +31,7 @@ if (!password_verify($password, $user['password'])) {
     jsonResponse(["message" => "Wrong password"], 401);
 }
 
-// Payload JWT
+
 $payload = [
     "iss"  => JWT_ISSUER,
     "aud"  => JWT_AUDIENCE,
@@ -41,7 +41,7 @@ $payload = [
     "role" => $user['role']
 ];
 
-// Generate token
+
 $token = JWT::encode($payload, JWT_SECRET, 'HS256');
 
 jsonResponse([

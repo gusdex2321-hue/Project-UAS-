@@ -1,13 +1,12 @@
 <?php
 require "../auth/middleware.php";
 
-// Hanya admin atau mahasiswa
-if (!in_array($currentUser['role'], ['admin','mahasiswa'])) {
+if (!in_array($currentUser['role'], ['admin','petugas'])) {
     jsonResponse(["message" => "Akses ditolak"], 403);
 }
 
 jsonResponse([
-    "message" => "Dashboard Mahasiswa",
+    "message" => "Dashboard Petugas Keuangan UKT",
     "user_id" => $currentUser['uid'],
     "role" => $currentUser['role']
 ]);
