@@ -3,7 +3,7 @@ require "../auth/middleware.php";
 require "../config/database.php";
 require "../controllers/UserController.php";
  
-// admin only
+
 if ($currentUser['role'] !== 'admin') {
     jsonResponse(["message" => "Akses ditolak"], 403);
 }
